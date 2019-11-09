@@ -22,8 +22,8 @@
 
 %% Pick images to be input for analysis
 
-maskdir = 'Pos1_Mask of MAX_Merged.tif'; %'Result of Erode3_TRACKING_Mask_Pos1_8.7.18.tif'
-gfpdir = 'AVG_4.8.19_sst2_s539a_fusgfp_bem1ruby_300nM_12hr_20min_pos1_rfp.tif'; % bem1
+maskdir = 'Pos2_Mask of MAX_Merged-1.tif'; %'Result of Erode3_TRACKING_Mask_Pos1_8.7.18.tif'
+gfpdir = 'AVG_GFP_Pos2_4.8.19_sst2_s539a_fusgfp_bem1ruby_300nM_12hr_20min_int.tif'; % bem1
 cherrydir = 'GFP_Sub.tif'; % fus3 to be aligned, has had nucleus subtracted
 
 preimin = cell(145,1);
@@ -98,10 +98,10 @@ end
 
 
 
-figure();
-subplot(1,2,1), 
-imagesc(gfpin{tmax,1}.*cellmask{tmax,1});
-subplot(1,2,2), imagesc(cherryin{tmax,1}.*cellmask{tmax,1});
+% figure();
+% subplot(1,2,1), 
+% imagesc(gfpin{tmax,1}.*cellmask{tmax,1});
+% subplot(1,2,2), imagesc(cherryin{tmax,1}.*cellmask{tmax,1});
 
 
 %% label the mask and keep track of number of cells in each time point
@@ -368,9 +368,15 @@ function [ output_args ] = jthresh( image, percentile )
                 targetbin = 100;
             end
         end
+        
+        if bins(1,targetbin) >= immax;
+            output_args = immax-1; % using this to set a threshold, so if it comes up with the max, it won't work
+        else        
         output_args = bins(1,targetbin);
+        end
+        
     else
-        output_args = 0;
+        output_args = 0; % return in case that it could not make a histogram
     
 
 end
